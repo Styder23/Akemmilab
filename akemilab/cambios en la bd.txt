@@ -1,0 +1,134 @@
+alterar la tabla comprobante:
+alter table comprobante add COLUMN destotal decimal(9,2);
+
+alterar la tabla detalle_venta:
+alter table detalle_venta MODIFY COLUMN descuento int;
+
+crear nuevas tablas:
+create table ordenclinico(
+idorden int PRIMARY KEY not null AUTO_INCREMENT,
+codorden varchar(45),
+fecha datetime
+);
+
+create table detalle_orden(
+iddetor int PRIMARY KEY not null AUTO_INCREMENT,
+fk_exam int,
+FOREIGN KEY (fk_exam)REFERENCES examen(idexamen),
+fk_orde int,
+FOREIGN KEY (fk_orde)REFERENCES ordenclinico(idorden)
+);
+
+funcion para el codigo de la orden:
+DELIMITER $$
+
+CREATE FUNCTION generar_codigo_orden() RETURNS VARCHAR(10)
+BEGIN
+    DECLARE ultimo_codigo VARCHAR(10);
+    DECLARE nuevo_codigo VARCHAR(10);
+    DECLARE numero INT;
+
+    -- Obtener el último código
+    SELECT codorden INTO ultimo_codigo
+    FROM ordenclinico
+    ORDER BY idorden DESC
+    LIMIT 1;
+
+    -- Si existe un código, extraer el número
+    IF ultimo_codigo IS NOT NULL THEN
+        SET numero = CAST(SUBSTRING(ultimo_codigo, 5) AS UNSIGNED) + 1;
+    ELSE
+        -- Si no hay códigos, empezar desde 1
+        SET numero = 1;
+    END IF;
+
+    -- Crear el nuevo código
+    SET nuevo_codigo = CONCAT('ORD-', LPAD(numero, 3, '0'));
+
+    RETURN nuevo_codigo;
+END$$
+
+LOS PERFILES:
+create view v_perfiles as
+SELECT idperfil,nomperfil,precioperfil from perfiles;
+
+DELIMITER //
+
+CREATE PROCEDURE p_inperfil(
+    IN perf VARCHAR(100), 
+    IN pre VARCHAR(45)
+)
+BEGIN
+    DECLARE perfil_existente INT;
+
+    -- Verificar si existe
+    SELECT COUNT(*) INTO perfil_existente FROM perfiles WHERE nomperfil = perf;
+
+    IF perfil_existente > 0 THEN
+        SELECT 'El perfil ya existe' AS mensaje;
+    ELSE   
+        -- Insertar nuevo
+        INSERT INTO perfiles (nomperfil, precioperfil) 
+        VALUES (perf, pre);
+        SELECT 'El perfil se ingresó correctamente' AS mensaje;
+    END IF;
+END//
+
+DELIMITER ;
+
+DELIMITER //
+create  FUNCTION obtenerIdPerfil () RETURNS INT(11) DETERMINISTIC begin
+    SELECT idperfil into @id FROM perfiles ORDER BY idperfil DESC LIMIT 1;
+	return @id;
+end//
+DELIMITER ;
+
+DELIMITER //
+
+CREATE PROCEDURE in_per_exa(IN exa INT)
+BEGIN
+    DECLARE perfil_id INT;
+    SET perfil_id = obtenerIdPerfil();
+    INSERT INTO perfilxexam (fk_idtipoex, fk_idperfil) VALUES (exa, perfil_id);
+END //
+
+DELIMITER ;
+
+
+DELIMITER //
+
+CREATE PROCEDURE p_updateperfil(
+    IN idperf INT,
+    IN perf VARCHAR(100), 
+    IN pre VARCHAR(45)
+)
+BEGIN
+    DECLARE persona_id INT;
+	DECLARE cambios INT DEFAULT 0;
+
+	IF (SELECT COUNT(*) FROM perfiles WHERE nomperfil = perf and idperfil!=idperf) > 0 THEN
+            SELECT 'Ya existe un perfil con ese nombre' AS mensaje;
+    ELSE
+    	-- Verificar si hay cambios
+            IF NOT EXISTS (
+                SELECT 1 FROM perfiles
+                WHERE idperfil = idperf
+                AND (nomperfil = perf AND precioperfil = pre)
+            ) THEN
+                SET cambios = 1; -- Se ha encontrado al menos un cambio en medicos
+            END IF;
+            IF cambios > 0 THEN
+    			UPDATE perfiles
+                SET nomperfil = perf, precioperfil = pre
+                WHERE idperfil = idperf;
+         		SELECT 'El perfil se actualizó correctamente' AS mensaje;
+            ELSE
+                SELECT 'No existen cambios' AS mensaje;
+        	END IF;
+    END IF;
+    
+END//
+
+DELIMITER ;
+
+DELIMITER ;

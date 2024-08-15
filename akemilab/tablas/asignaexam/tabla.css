@@ -1,0 +1,103 @@
+/* Estilos generales */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+}
+
+.page-header {
+    background-color: #007bff;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0069d9;
+    border-color: #0062cc;
+}
+
+.modal-content {
+    border-radius: 0;
+}
+
+/* Estilos para la tabla */
+table.dataTable {
+    width: 100%;
+    margin: 0 auto;
+    clear: both;
+    border-collapse: collapse !important;
+    border-spacing: 0;
+}
+
+table.dataTable thead th,
+table.dataTable tbody td {
+    padding: 10px 15px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+table.dataTable thead th {
+    background-color: #f8f9fa;
+    text-align: center;
+    font-weight: bold;
+    border-top: 0;
+}
+
+table.dataTable tbody td {
+    background-color: #fff;
+    text-align: center;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f2f2f2;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #e9ecef;
+}
+
+/* Estilos para botones en la tabla */
+.table .btn {
+    margin-right: 5px;
+}
+
+/* Estilo para texto verde en estado 'Pendiente' */
+.text-success {
+    color: #28a745;
+}
+
+/* Estilo para texto en negrita */
+.fw-bold {
+    font-weight: bold;
+}
+
+/* Estilo para DataTables */
+#example_wrapper {
+    overflow-x: auto; /* Añade scroll horizontal si es necesario */
+}
+
+#example {
+    width: 100%; /* Opcional: Ajusta el ancho de la tabla al 100% */
+}
+
+/* Ajustes específicos para las filas */
+#example tbody tr {
+    white-space: nowrap; /* Evita el salto de línea en las celdas */
+}
+
+/* Ajustes para las cabeceras de las columnas */
+#example thead th {
+    text-align: center; /* Centra el texto en las cabeceras */
+}
+
+/* Ajustes para las celdas */
+#example tbody td {
+    text-align: center; /* Centra el texto en las celdas */
+    vertical-align: middle; /* Centra verticalmente el contenido */
+    padding: 8px; /* Añade espaciado interior a las celdas */
+}

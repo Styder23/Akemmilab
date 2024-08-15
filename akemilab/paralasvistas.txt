@@ -1,0 +1,45 @@
+/*La vista de los examenes pendientes*/
+
+CREATE VIEW v_exam AS
+    SELECT 
+        e.idexamen AS ID,
+        pe.dni AS dni,
+        pe.codigo AS Código_pa,
+        CONCAT_WS(' ', pe.Nombre, pe.Apellido) AS Paciente,
+        e.codmuestra AS codmuestra,
+        e.fecha AS fecha,
+        t.tipoexam AS tipoexam,
+        per.nomperfil as Perfil,
+        d.estadoexam AS estadoexam       
+    FROM
+        examen e
+        JOIN tipoexamen t ON t.idtipoexamen = e.fk_idtipoexamen
+        JOIN estadoexam d ON d.idestadoexam = e.fk_idestadoexam
+        JOIN pacientes p ON p.idpacientes = e.fk_idpacientes
+        JOIN personas pe ON pe.idpersonas = p.fk_idpersonas
+        LEFT join perfiles per ON per.idperfil=e.fk_perfil
+    WHERE
+        e.fk_idestadoexam = 1
+    ORDER BY e.idexamen;
+
+/*la vista de los resultados*/
+CREATE VIEW v_exam2 AS
+    SELECT 
+        e.idexamen AS ID,
+        pe.dni AS dni,
+        CONCAT_WS(' ', pe.Nombre, pe.Apellido) AS Paciente,
+        e.codmuestra AS codmuestra,
+        e.fecha AS fecha,
+        t.tipoexam AS tipoexam,
+        per.nomperfil as Perfil,
+        d.estadoexam AS estadoexam       
+    FROM
+        examen e
+        JOIN tipoexamen t ON t.idtipoexamen = e.fk_idtipoexamen
+        JOIN estadoexam d ON d.idestadoexam = e.fk_idestadoexam
+        JOIN pacientes p ON p.idpacientes = e.fk_idpacientes
+        JOIN personas pe ON pe.idpersonas = p.fk_idpersonas
+        LEFT join perfiles per ON per.idperfil=e.fk_perfil
+    WHERE
+        e.fk_idestadoexam = 2
+    ORDER BY e.idexamen;

@@ -1,0 +1,46 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.card-header {
+    font-size: 1.5rem;
+}
+
+.btn-eliminar {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.btn-eliminar:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+
+.table thead th {
+    text-align: center;
+}
+
+#total {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+/* Estilo personalizado para Select2 */
+.select2-container--bootstrap4 .select2-selection--single {
+    height: calc(2.25rem + 2px);
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.select2-container--bootstrap4 .select2-selection--single:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 .2rem rgba(0, 123, 255, .25);
+}
